@@ -1,0 +1,49 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body{
+	display: flex;
+}
+
+.drag-drop-container {
+  display: flex;
+	flex-flow: row wrap;
+  gap: 10px;
+}
+
+.drag-item {
+	width: 300px;
+	aspect-ratio: 1;
+	border: 2px solid rebeccapurple;
+	background-color: azure;
+	pointer-events: all;
+	cursor: grab;
+}
+
+.drag-item:active{
+	cursor: grabbing;
+}
+
+.drag-item img {
+	display: block;
+	object-fit: contain;
+	/* pointer-events: none; */
+}
+
+.target-drop-container{
+	position: relative;
+	min-width: 250px;
+	background: url(./assets/plus.png) center / 25% no-repeat, cornflowerblue;
+	border: 2px dashed darkslateblue;
+}

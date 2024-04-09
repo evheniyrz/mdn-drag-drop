@@ -75,13 +75,6 @@ window.addEventListener("DOMContentLoaded", function (event) {
 
   sourceContainer.addEventListener("drop", function (ev) {
     ev.preventDefault();
-    // console.log(
-    //   "%c Drop COntainer==> ",
-    //   "color:red;font-weight:bold;background:white",
-    //   {
-    //     t: ev,
-    //   }
-    // );
   });
 
   //   targetContainer.addEventListener("dragover", function (ev) {

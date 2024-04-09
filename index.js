@@ -29,40 +29,63 @@ window.addEventListener("DOMContentLoaded", function (event) {
   sourceContainer.addEventListener("dragover", function (ev) {
     ev.preventDefault();
     ev.dataTransfer.dropEffect = "move";
-    const currentItemList = Array.from(sourceContainer.children);
+    let currentItemList = Array.from(sourceContainer.children);
 
     const currentOverlappedElement = ev.target;
 
     if (currentOverlappedElement.parentElement === sourceContainer) {
-      console.log(
-        "%c DRAG OVER==> ",
-        "color:red;font-weight:bold;background:white",
-        {
-          currentOverlappedElement,
-          currentDraggableElement,
-        }
-      );
       /**
-       * itemList
-       * replace elements by index
-       * {
-       * 0: currentTarget,
-       * 1: sibling1,
-       * 2: sibling2,
-       * 3: sibling3,
-       * 4: sibling4,
-       * }
-       * replace current element index with currentOverlapedElementIndex
+       * ==================================================================
+       * CHANGE THE POSITION OF A DRAGGED ELEMENT AT RUN TIME
        *
+       * если индекс эл-та меньше индекса оверлапа и индекс оверлапа больше чем индекса драга +1, тогда:
+       * - перетаскиваемы индексим в индекс оверлапа, а из сплайсеного массива элементов увеличиваем индекс на 1
        */
-      const draggableIndexForOverlapped = currentItemList.findIndex(
+      const currentDraggableElementIndex = currentItemList.findIndex(
         (item) => item.id === currentDraggableElement.id
       );
-      const overlappedIndexForDraggable = currentItemList.findIndex(
+      const overlappedElementIndex = currentItemList.findIndex(
         (item) => item.id === currentOverlappedElement.id
       );
-      currentItemList[overlappedIndexForDraggable] = currentDraggableElement;
-      currentItemList[draggableIndexForOverlapped] = currentOverlappedElement;
+
+      if (
+        currentDraggableElementIndex - 1 === overlappedElementIndex ||
+        currentDraggableElementIndex + 1 === overlappedElementIndex
+      ) {
+        /**============================================================================= */
+        currentItemList[overlappedElementIndex] = currentDraggableElement;
+        currentItemList[currentDraggableElementIndex] =
+          currentOverlappedElement;
+        /**=========================================================================== */
+      } else if (currentDraggableElementIndex + 1 < overlappedElementIndex) {
+        /**============================================================================= */
+        for (
+          let index = currentDraggableElementIndex;
+          index <= overlappedElementIndex;
+          index++
+        ) {
+          if (index !== overlappedElementIndex) {
+            currentItemList[index] = currentItemList[index + 1];
+          } else {
+            currentItemList[index] = currentDraggableElement;
+          }
+        }
+        /**============================================================================== */
+      } else {
+        /**============================================================================== */
+        for (
+          let index = currentDraggableElementIndex;
+          index >= overlappedElementIndex;
+          index--
+        ) {
+          if (index !== overlappedElementIndex) {
+            currentItemList[index] = currentItemList[index - 1];
+          } else {
+            currentItemList[index] = currentDraggableElement;
+          }
+        }
+        /**=============================================================================== */
+      }
 
       sourceContainer.replaceChildren(...currentItemList);
     }

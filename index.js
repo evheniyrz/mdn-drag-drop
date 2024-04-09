@@ -16,10 +16,9 @@ window.addEventListener("DOMContentLoaded", function (event) {
   }
   sourceContainer.addEventListener("dragstart", function (ev) {
     currentDraggableElement = null;
-    // ev.dataTransfer.clearData();
-    // ev.dataTransfer.setData("text/plain", ev.target.id);
     ev.dataTransfer.effectAllowed = "move";
     currentDraggableElement = ev.target;
+    /**====================== SETUP PLACEHOLDER ======================================= */
     const timeId = setTimeout(() => {
       ev.target.classList.add("placeholder");
       clearTimeout(timeId);
@@ -29,34 +28,30 @@ window.addEventListener("DOMContentLoaded", function (event) {
   sourceContainer.addEventListener("dragover", function (ev) {
     ev.preventDefault();
     ev.dataTransfer.dropEffect = "move";
+
     let currentItemList = Array.from(sourceContainer.children);
 
     const currentOverlappedElement = ev.target;
 
     if (currentOverlappedElement.parentElement === sourceContainer) {
-      /**
-       * ==================================================================
-       * CHANGE THE POSITION OF A DRAGGED ELEMENT AT RUN TIME
-       *
-       * если индекс эл-та меньше индекса оверлапа и индекс оверлапа больше чем индекса драга +1, тогда:
-       * - перетаскиваемы индексим в индекс оверлапа, а из сплайсеного массива элементов увеличиваем индекс на 1
-       */
       const currentDraggableElementIndex = currentItemList.findIndex(
         (item) => item.id === currentDraggableElement.id
       );
+
       const overlappedElementIndex = currentItemList.findIndex(
         (item) => item.id === currentOverlappedElement.id
       );
-
+      /**============================ CONFIGURING DRAG AND DROP SORTING ================ */
+      /**======================  LEFT | RIGHT && TOP | BOTTOM SIBLINGS ================= */
       if (
         currentDraggableElementIndex - 1 === overlappedElementIndex ||
         currentDraggableElementIndex + 1 === overlappedElementIndex
       ) {
-        /**============================================================================= */
         currentItemList[overlappedElementIndex] = currentDraggableElement;
         currentItemList[currentDraggableElementIndex] =
           currentOverlappedElement;
-        /**=========================================================================== */
+        /**============================== MULTILINE DRAGGING =========================== */
+        /**============================== FROM LEFT TO RIGHT || TOP TO BOTTOM ========== */
       } else if (currentDraggableElementIndex + 1 < overlappedElementIndex) {
         /**============================================================================= */
         for (
@@ -70,7 +65,7 @@ window.addEventListener("DOMContentLoaded", function (event) {
             currentItemList[index] = currentDraggableElement;
           }
         }
-        /**============================================================================== */
+        /**============================== FROM RIGHT TO LEFT || BOTTOM TO TOP ========== */
       } else {
         /**============================================================================== */
         for (

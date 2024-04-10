@@ -73,9 +73,9 @@ body {
   text-align: right;
 }
 
-.drag-item.placeholder > *,
-.drag-item.placeholder::after,
-.drag-item.placeholder::before {
+.drag-item.dragging > *,
+.drag-item.dragging::after,
+.drag-item.dragging::before {
   visibility: hidden;
 }
 
@@ -91,6 +91,7 @@ body {
 }
 
 .target-drop-container {
+  counter-reset: dragItem;
   flex: 1 1;
   position: relative;
   min-width: 250px;
